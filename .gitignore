@@ -1,0 +1,9 @@
+*.txt
+*.md
+*.docx
+!README.md
+!CMakeLists.txt
+build
+.*
+!.gitignore
+
