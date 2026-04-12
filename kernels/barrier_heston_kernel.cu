@@ -69,7 +69,7 @@ __global__ void barrier_heston_kernel(
             continue;
         }
 
-        // Brownian bridge correction — v_pos used as local variance proxy.
+        // Brownian bridge correction, v_pos used as local variance proxy.
         const double var_dt = v_pos * dt;
         const double la     = is_upper ? log(barrier / s_prev) : log(s_prev / barrier);
         const double lb     = is_upper ? log(barrier / s)      : log(s      / barrier);

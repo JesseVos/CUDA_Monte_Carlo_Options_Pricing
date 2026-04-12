@@ -3,6 +3,7 @@
 *.docx
 !README.md
 !CMakeLists.txt
+!CONTRIBUTING.md
 build
 .*
 !.gitignore
