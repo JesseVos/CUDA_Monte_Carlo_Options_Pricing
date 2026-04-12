@@ -52,7 +52,7 @@ As a computational physicist specializing in GPU-accelerated plasma simulations,
 ## Architecture
 
 ```
-mc-options-engine/
+CUDA_Monte_Carlo_Options_Pricing/
 ├── include/
 │   ├── models/
 │   │   ├── model.h           # Abstract base class (generate_paths_cpu, generate_paths_gpu)
