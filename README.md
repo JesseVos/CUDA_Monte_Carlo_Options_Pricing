@@ -102,11 +102,11 @@ CUDA_Monte_Carlo_Options_Pricing/
 │   └── test_greeks.cpp       # FD Greeks vs Black-Scholes analytical
 ├── benchmarks/
 │   ├── benchmark_heston_smile.cpp  # Implied vol surface under Heston
-│   └── benchmark_all_options.cpp   # CPU vs GPU timing, all option types + models
-├── benchmark_results.csv     # Latest benchmark output
+│   ├── benchmark_all_options.cpp   # CPU vs GPU timing, all option types + models
+│   ├── benchmark_results_<GPU>.csv # Per-hardware timing results
+│   └── PERFORMANCE.md              # Auto-generated multi-hardware comparison
 ├── CMakeLists.txt
-├── README.md
-└── PLAN.md
+└── README.md
 ```
 
 The codebase has four layers:
@@ -227,11 +227,12 @@ print(heston.price_asian_call())
 ### Benchmarks
 
 ```bash
-# Run the full CPU vs GPU timing suite (all option types, 10K–10M paths)
-./build/benchmark_all_options > benchmark_results.csv
+# Automated harness: detects GPU, runs N times, aggregates, updates README + PERFORMANCE.md
+./scripts/run_benchmarks.sh --runs 3 --update-readme
 
-# Generate publication-quality plots (requires pandas + matplotlib)
-python3 python/plot_benchmarks.py benchmark_results.csv
+# Or run the timing binary directly and plot manually
+./build/benchmark_all_options > benchmarks/benchmark_results_<GPU>.csv
+python3 python/plot_benchmarks.py benchmarks/benchmark_results_<GPU>.csv
 # Produces: speedup_by_option_type.png, gpu_throughput.png, cpu_vs_gpu_timing.png
 ```
 

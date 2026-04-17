@@ -8,21 +8,7 @@ All timings in milliseconds.  CPU: single core, GCC 13.3, -O3.  252 steps, spot=
 
 | GPU | Source file |
 |-----|------------|
-| Laptop GPU (L500) | `benchmark_results.csv` |
 | T500 | `benchmark_results_T500.csv` |
-
----
-
-### Laptop GPU (L500)
-
-| Option Type | CPU 1M (ms) | GPU 1M (ms) | GPU 10M (ms) | Speedup |
-|-------------|------------:|------------:|-------------:|--------:|
-| GBM European | 4,121 ±135 | 215 | 2,172 | **19.2×** |
-| GBM Asian | 7,188 ±243 | 308 | 3,112 | **23.3×** |
-| GBM Barrier (Up-and-Out) | 9,855 ±140 | 958 ±2 | 9,699 | **10.3×** |
-| Heston European | 10,310 ±113 | 628 | 6,377 | **16.4×** |
-| Heston Asian | 10,514 ±43 | 634 | 6,440 | **16.6×** |
-| Heston Barrier (Up-and-Out) | 14,724 ±42 | 1,288 | 13,058 | **11.4×** |
 
 ---
 

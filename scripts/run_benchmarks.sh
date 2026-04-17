@@ -144,7 +144,7 @@ echo "[benchmark] Aggregating..."
 python3 "$SCRIPT_DIR/aggregate_benchmarks.py" "$RUN_DIR" "$GPU_SHORT"
 echo ""
 
-RESULTS_CSV="$REPO_ROOT/benchmark_results_${GPU_SHORT}.csv"
+RESULTS_CSV="$REPO_ROOT/benchmarks/benchmark_results_${GPU_SHORT}.csv"
 
 # ── Supplementary benchmarks (once each, not repeated in outer loop) ──────────
 echo "[benchmark] benchmark_convergence..."
@@ -179,7 +179,7 @@ fi
 
 echo "========================================================================"
 echo "  Benchmark complete."
-echo "  Per-hardware CSV : benchmark_results_${GPU_SHORT}.csv"
+echo "  Per-hardware CSV : benchmarks/benchmark_results_${GPU_SHORT}.csv"
 echo "  Run directory    : $RUN_DIR"
 echo "  PERFORMANCE.md   : benchmarks/PERFORMANCE.md"
 if (( UPDATE_README )); then

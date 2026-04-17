@@ -95,10 +95,9 @@ def main():
     repo_root = Path(__file__).parent.parent
     out_path  = repo_root / "benchmarks" / "PERFORMANCE.md"
 
-    # Collect: legacy file first, then per-hardware files sorted by GPU name
-    legacy = repo_root / "benchmark_results.csv"
-    named  = sorted(glob.glob(str(repo_root / "benchmark_results_*.csv")))
-    all_csvs = (([str(legacy)] if legacy.exists() else []) + named)
+    # Collect all per-hardware CSVs from benchmarks/ directory
+    named    = sorted(glob.glob(str(repo_root / "benchmarks" / "benchmark_results_*.csv")))
+    all_csvs = named
 
     if not all_csvs:
         print("No benchmark_results*.csv files found.", file=sys.stderr)

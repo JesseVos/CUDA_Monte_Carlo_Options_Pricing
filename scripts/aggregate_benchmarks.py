@@ -100,9 +100,9 @@ def main():
         w.writerows(out_rows)
     print(f"Written: {agg_path}")
 
-    # Copy to benchmark_results_<GPU>.csv at repo root
+    # Copy to benchmarks/benchmark_results_<GPU>.csv
     repo_root = Path(__file__).parent.parent
-    out_csv   = repo_root / f"benchmark_results_{gpu_short}.csv"
+    out_csv   = repo_root / "benchmarks" / f"benchmark_results_{gpu_short}.csv"
     with open(out_csv, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=out_cols)
         w.writeheader()
