@@ -279,6 +279,3 @@ source ~/.venvs/dev/bin/activate
 python3 scripts/market_comparison.py
 ```
 
-## License
-
-MIT
