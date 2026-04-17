@@ -4,21 +4,21 @@
 
 ## Performance
 
-Benchmarked on an NVIDIA GPU (CUDA 13.2) vs a single CPU core (GCC 13.3, -O3), 252 time steps.
+Benchmarked on **T500** (CUDA 13.2) vs a single CPU core (GCC 13.3, -O3), 252 time steps, median of 1 outer runs × 5 inner runs (≥5 samples).
 
 | Option Type | CPU 1M paths (ms) | GPU 1M paths (ms) | GPU 10M paths (ms) | Speedup (1M) |
 |-------------|------------------:|------------------:|-------------------:|-------------:|
-| GBM European | 4,185 | 215 | 2,154 | **19.5×** |
-| GBM Asian | 7,275 | 308 | 3,086 | **23.6×** |
-| GBM Barrier (Up-and-Out) | 10,136 | 954 | 9,573 | **10.6×** |
-| Heston European | 11,177 | 625 | 6,271 | **17.9×** |
-| Heston Asian | 10,766 | 631 | 6,339 | **17.1×** |
-| Heston Barrier (Up-and-Out) | 15,531 | 1,284 | 12,925 | **12.1×** |
+| GBM European | 4,073 | 216 | 2,169 | **18.9×** |
+| GBM Asian | 7,066 | 309 | 3,113 | **22.9×** |
+| GBM Barrier (Up-and-Out) | 9,765 | 958 | 9,715 | **10.2×** |
+| Heston European | 10,383 | 631 | 6,377 | **16.5×** |
+| Heston Asian | 10,506 | 637 | 6,468 | **16.5×** |
+| Heston Barrier (Up-and-Out) | 14,747 | 1,294 | 13,150 | **11.4×** |
 
-GPU throughput at 1M paths: **3–5 M paths/sec** for path-dependent options (Asian, Barrier),
-**4–6 M paths/sec** for European options under both models.
+GPU throughput at 1M paths: **1–3 M paths/sec** for path-dependent options (Asian, Barrier),
+**2–5 M paths/sec** for European options under both models.
 
-See `benchmark_results.csv` and `python/plot_benchmarks.py` for full results and plots.
+See [`benchmarks/PERFORMANCE.md`](benchmarks/PERFORMANCE.md) for full results across all tested hardware.
 
 ## Background
 

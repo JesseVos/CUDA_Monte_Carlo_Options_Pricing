@@ -5,6 +5,8 @@
 !CMakeLists.txt
 !CONTRIBUTING.md
 build
+benchmarks/results/
 .*
 !.gitignore
+!benchmarks/PERFORMANCE.md
 
