@@ -279,3 +279,7 @@ source ~/.venvs/dev/bin/activate
 python3 scripts/market_comparison.py
 ```
 
+For a full interactive walkthrough — including Heston calibration via `scipy.optimize`
+and a put-call parity verification — see
+[`notebooks/06_market_comparison.ipynb`](notebooks/06_market_comparison.ipynb).
+
