@@ -1,0 +1,76 @@
+name: CUDA tests (simulated H100)
+
+# Optional, non-required check. The hosted runners have no GPU, so this runs
+# the GPU tests on a simulated NVIDIA H100
+# (https://github.com/pantheongpu/pantheonsim). A simulator cannot reproduce
+# hardware-specific behavior or timing, so it complements real-GPU testing and
+# does not replace it.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "src/**"
+      - "kernels/**"
+      - "include/**"
+      - "tests/**"
+      - "CMakeLists.txt"
+      - ".github/workflows/gpu-sim.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  cuda-sim:
+    name: CUDA 13.0, simulated H100
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          persist-credentials: false
+
+      - name: Set up the simulated GPU and CUDA toolkit
+        uses: pantheongpu/setup-pantheonsim@deff5781e8adfd83dec98dd5242dcbc96a564773 # v0.1.10
+        with:
+          gpu: nvidia/h100
+          cuda-toolkit: "13.0"
+
+      # The simulator runs PTX only (90-virtual) and needs a shared CUDA
+      # runtime. The Python bindings are skipped (no pybind11 on the runner).
+      - name: Configure project
+        run: |
+          cmake -B build -S . \
+                -DCMAKE_BUILD_TYPE=Release \
+                -DCMAKE_CUDA_COMPILER=/usr/local/cuda-13.0/bin/nvcc \
+                -DCUDAToolkit_ROOT=/usr/local/cuda-13.0 \
+                -DCMAKE_CUDA_ARCHITECTURES=90-virtual \
+                -DCMAKE_CUDA_RUNTIME_LIBRARY=Shared
+
+      - name: Build the GPU tests
+        run: |
+          vgpu run --preload cmake --build build -j3 --target \
+            test_gpu test_variance_reduction test_heston test_asian test_barrier test_greeks
+
+      # Only the tests that use the GPU engine are run (the CPU-only tests do
+      # not exercise the device). The job fails on any test failure, skipped
+      # test or device error.
+      - name: Run the GPU tests
+        working-directory: build
+        run: |
+          set -o pipefail
+          for t in test_gpu test_variance_reduction test_heston test_asian test_barrier test_greeks; do
+            echo "::group::$t"
+            vgpu run ./$t --gtest_filter='*GPU*' 2>&1 | tee "../$t.log"
+            echo "::endgroup::"
+            if grep -Eqi "VirtualGPU error|no CUDA-capable device|SKIPPED|cudaError|CUDA error" "../$t.log"; then
+              echo "::error::$t hit a device error or skipped tests"
+              exit 1
+            fi
+            grep -Eq "\[  PASSED  \] [1-9][0-9]* tests?\." "../$t.log"
+          done
